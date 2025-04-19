@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Recommendation System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <style>
+    /* Animated Gradient Background */
+    body {
+      background: linear-gradient(-45deg, #e0f7fa, #e3f2fd, #fce4ec, #f3e5f5);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: #4a148c;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* Stylish Search Bar */
+    .input-group {
+      border-radius: 50px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .input-group:hover {
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-control {
+      border: none;
+      padding: 1rem;
+      border-radius: 50px 0 0 50px;
+    }
+
+    .form-control:focus {
+      box-shadow: none;
+      outline: none;
+    }
+
+    .btn-primary {
+      border-radius: 0 50px 50px 0;
+      background: #7b1fa2;
+      border: none;
+      padding: 0 1.5rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #9c27b0;
+      box-shadow: 0 0 10px #9c27b0, 0 0 20px #9c27b0;
+      transform: scale(1.05);
+    }
+
+    /* Glassmorphism Card Style */
+    .card {
+      border: none;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-width: 250px;
+      max-width: 250px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+    }
+
+    .card:active {
+      transform: scale(0.97);
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .card-text {
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+      border-radius: 20px 20px 0 0;
+    }
+
+    /* Netflix-style horizontal scroll */
+    .horizontal-scroll-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 1rem;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .horizontal-scroll-container::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container my-5">
+    <h1 class="text-center mb-5">🌟 AI-Powered Product Recommendation 🌟</h1>
+
+    <form method="POST" class="mb-5">
+      <div class="input-group">
+        <input type="text" class="form-control" name="query" placeholder="Search for a product..." required>
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+
+    {% if recommendations %}
+    <div class="horizontal-scroll-container">
+      {% for product in recommendations %}
+      <div class="card">
+        <img src="{{ product.imgs[0] if product.imgs else 'https://via.placeholder.com/150' }}"
+             class="card-img-top" alt="Product Image">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p class="card-text">
+            <strong>Category:</strong> {{ product.category }}<br>
+            <strong>Brand:</strong> {{ product.brand }}<br>
+            <strong>Similarity:</strong> {{ "%.2f" | format(product.similarity) }}
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
